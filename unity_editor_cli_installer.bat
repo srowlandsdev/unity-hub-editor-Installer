@@ -1,35 +1,68 @@
 @echo off
+set CURL_DOWNLOAD_PATH=%1
+set UNITY_VERSION=%2
+set UNITY_CHANGESET=%3
+set UNITY_PATH="C:\Program Files\Unity\Hub\Editor\%UNITY_VERSION%\Editor\Unity.exe"
+set HUB_INSTALLED_PATH="C:\Program Files\Unity Hub\Unity Hub.exe"
 
-::Path to the hub is hard coded but for this you could also use a batch variable as has been done with the version and changeset
-set hubpath="C:\Program Files\Unity Hub\Unity Hub.exe"
-
-::Checking for the presence of the Hub exe, again if this is not default pathed then change the path or use a variable for the path
-if not exist %hubpath%(
-	echo No Unity Hub present at %hubpath%!
-	exit 2
+:VarChecker
+if "%1" == "" (
+	echo CURL_DOWNLOAD_PATH is empty
+	goto Err
+)
+if "%2" == "" (
+	echo UNITY_VERSION is empty
+	goto Err
+)
+if "%3" == "" (
+	echo UNITY_CHANGESET is empty
+	goto Err
 )
 
-::For the version variable just pass a version like: 2021.2.3f1 as example
-set editorversion=%1
-::For the changeset you will need to refer to a release notes pages for the version an example would be: 4bf1ec4b23c9
-set editorchangeset=%2
+:GetUnityHub
+echo Downloading Unity Hub to: %CURL_DOWNLOAD_PATH%
+echo.-----------------------------------------------------------------------------------------------------------------------------.
 
-if [%1]==[] echo Editor version value is missing!
-if [%2]==[] echo Editor changeset value is missing!
+if exist %CURL_DOWNLOAD_PATH%\UnityHubSetup.exe (
+	echo UnityHubSetup.exe already downloaded to %CURL_DOWNLOAD_PATH%, moving to installation
+	goto InstallEditorVersion
+) else (
+	curl -o "%CURL_DOWNLOAD_PATH%"/UnityHubSetup.exe https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.exe
+)
 
-echo Available release versions:
-%hubpath% -- --headless editors -r
+:InstallUnityHub
+call "%CURL_DOWNLOAD_PATH%\UnityHubSetup.exe" /S
 
-echo Currently installed versions:
-%hubpath% -- --headless editors -i
+:InstallEditorVersion
+if exist %UNITY_PATH% (
+	echo Unity version %UNITY_VERSION% already installed at %UNITY_PATH%, moving to module installation
+	goto InstallEditorModules
+) else (
+	echo Installing Unity Editor version: %UNITY_VERSION%
+	echo Release versions available:
+	call %HUB_INSTALLED_PATH% -- --headless editors -r
+	echo.-----------------------------------------------------------------------------------------------------------------------------.
+	echo Installed editor versions:
+	call %HUB_INSTALLED_PATH% --headless editors -i
+	echo.-----------------------------------------------------------------------------------------------------------------------------.
+	echo Current install path for editor version:
+	call %HUB_INSTALLED_PATH% -- --headless ip -g
+	echo.-----------------------------------------------------------------------------------------------------------------------------.
+	echo Running install command:
+	echo %HUB_INSTALLED_PATH% -- --headless install --version %UNITY_VERSION% --changeset %UNITY_CHANGESET%
+	echo.-----------------------------------------------------------------------------------------------------------------------------.
+)
 
-echo Current installation path:
-%hubpath% -- --headless install-path -g
+:InstallEditorModules
+echo Installing editor modules
+echo %HUB_INSTALLED_PATH% -- --headless install-modules --version %UNITY_VERSION% -m ios android --childModules
+echo.-----------------------------------------------------------------------------------------------------------------------------.
+goto Complete
 
-echo Installing Unity Editor %editorversion%
-%hubpath% -- --headless install --version %editorversion% --changeset %editorchangeset%
+:Err
+echo Error encountered during installation
+pause
 
-echo Installing Unity Editor modules
-%hubpath% -- --headless install-modules --version %editorversion% --changeset %editorchangeset% -m documentation -standardassets -example
-
-exit 0
+:Complete
+echo Unity installation has now completed for version %UNITY_VERSION%
+pause
