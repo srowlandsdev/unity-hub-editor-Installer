@@ -1,13 +1,22 @@
 # unity-hub-editor-Installer
-BAT file that uses the local unity hub to install editors and modules over the hub command line interface
+BAT file that uses CURL to download the UnityHubSetup.exe file then install it and a chosen version of Unity
 
-# Usage
+# Installation
 1. Download the script to your machine
 2. Create a shortcut from the file to the desktop
 3. Right Click on the shortcut and select Properties
 4. Under Target extend the launch with arguments for the unity hub installation path, editor version and changeset. Here is an example: "C:\Users\Sam\Desktop\unity-hub-editor-installer.bat" D:\Newfolder 2018.4.36f1 6cd387d23174
 5. Click Apply once changes have been made
 6. Run the newly modified shortcut
+
+## Shortcuts
+Included with the script is a zip file with desktop shortcuts that are intended to run off the script. To use them download and extract the zip anywhere on your machine and follow these instructions:
+
+1. Open each shortcut by right clicking and selecting Properties 
+2. Modify the path to the BAT file under the Target section
+3. Next modify the first agument which states where to download the UnityHubSetup.exe file
+4. Leave the unity version and changeset as they are unless you intend to point to a different version when installing
+5. Apply changes to the shortcuts and click Ok
 
 ## Test Cases
 1. During installation if CURL_DOWNLOAD_PATH is empty do not progress
