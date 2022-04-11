@@ -5,7 +5,7 @@ BAT file that uses the local unity hub to install editors and modules over the h
 1. Download the script to your machine
 2. Create a shortcut from the file to the desktop
 3. Right Click on the shortcut and select Properties
-4. Under Target extend the launch with arguments for the unity hub installation path, editor version and changeset. Here is an example: "C:\Users\Sam\Desktop\new 6.bat" D:\Newfolder 2018.4.36f1 6cd387d23174
+4. Under Target extend the launch with arguments for the unity hub installation path, editor version and changeset. Here is an example: "C:\Users\Sam\Desktop\unity-hub-editor-installer.bat" D:\Newfolder 2018.4.36f1 6cd387d23174
 5. Click Apply once changes have been made
 6. Run the newly modified shortcut
 
