@@ -9,7 +9,7 @@ BAT file that uses CURL to download the UnityHubSetup.exe file then install it a
 5. Click Apply once changes have been made
 6. Run the newly modified shortcut
 
-## Shortcuts
+# Shortcuts
 Included with the script is a zip file with desktop shortcuts that are intended to run off the script. To use them download and extract the zip anywhere on your machine and follow these instructions:
 
 1. Open each shortcut by right clicking and selecting Properties 
@@ -21,7 +21,13 @@ Included with the script is a zip file with desktop shortcuts that are intended 
 # Notes
 :warning:	Run the bat file or shortcuts as Administrator in order to avoid UAC popups
 
-## Test Cases
+# Known Issues :bug:	
+- Licensing SDK callback errors
+  - These are not fatal and will not stop installation
+- UAC Popups in non admin execution
+  - Nothing can be done at this time other than decrease UAC alert level or run as admin
+
+# Test Cases
 1. During installation if CURL_DOWNLOAD_PATH is empty do not progress
 2. During installation if UNITY_VERSION is empty do not progress
 3. During installation if UNITY_CHANGESET is empty do not progress
