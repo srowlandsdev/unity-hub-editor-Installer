@@ -18,6 +18,9 @@ Included with the script is a zip file with desktop shortcuts that are intended 
 4. Leave the unity version and changeset as they are unless you intend to point to a different version when installing
 5. Apply changes to the shortcuts and click Ok
 
+# Notes
+:warning:	Run the bat file or shortcuts as Administrator in order to avoid UAC popups
+
 ## Test Cases
 1. During installation if CURL_DOWNLOAD_PATH is empty do not progress
 2. During installation if UNITY_VERSION is empty do not progress
