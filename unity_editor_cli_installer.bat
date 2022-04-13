@@ -8,15 +8,15 @@ set HUB_INSTALLED_PATH="C:\Program Files\Unity Hub\Unity Hub.exe"
 :VarChecker
 if "%1" == "" (
 	echo CURL_DOWNLOAD_PATH is empty
-	goto Err
+	goto VarErr
 )
 if "%2" == "" (
 	echo UNITY_VERSION is empty
-	goto Err
+	goto VarErr
 )
 if "%3" == "" (
 	echo UNITY_CHANGESET is empty
-	goto Err
+	goto VarErr
 )
 
 :GetUnityHub
@@ -43,26 +43,26 @@ if exist %UNITY_PATH% (
 	call %HUB_INSTALLED_PATH% -- --headless editors -r
 	echo.-----------------------------------------------------------------------------------------------------------------------------.
 	echo Installed editor versions:
-	call %HUB_INSTALLED_PATH% --headless editors -i
+	call %HUB_INSTALLED_PATH% -- --headless editors -i
 	echo.-----------------------------------------------------------------------------------------------------------------------------.
 	echo Current install path for editor version:
 	call %HUB_INSTALLED_PATH% -- --headless ip -g
 	echo.-----------------------------------------------------------------------------------------------------------------------------.
 	echo Running install command:
-	echo %HUB_INSTALLED_PATH% -- --headless install --version %UNITY_VERSION% --changeset %UNITY_CHANGESET%
+	call %HUB_INSTALLED_PATH% -- --headless install --version %UNITY_VERSION% --changeset %UNITY_CHANGESET%
 	echo.-----------------------------------------------------------------------------------------------------------------------------.
 )
 
 :InstallEditorModules
 echo Installing editor modules
-echo %HUB_INSTALLED_PATH% -- --headless install-modules --version %UNITY_VERSION% -m ios android --childModules
+call %HUB_INSTALLED_PATH% -- --headless install-modules --version %UNITY_VERSION% -m ios android --childModules
 echo.-----------------------------------------------------------------------------------------------------------------------------.
 goto Complete
 
-:Err
-echo Error encountered during installation
-pause
+:VarErr
+echo Error encountered during installation due to missing or improper variable
+exit 1
 
 :Complete
 echo Unity installation has now completed for version %UNITY_VERSION%
-pause
+exit 0
