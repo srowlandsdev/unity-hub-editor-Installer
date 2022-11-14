@@ -30,7 +30,7 @@ if exist %CURL_DOWNLOAD_PATH%\UnityHubSetup.exe (
 call "%CURL_DOWNLOAD_PATH%\UnityHubSetup.exe" /S
 
 (for %%a in(%UNITY_VERSIONS%) do (
-	goto InstallEditorVersion %%a
+	call :InstallEditorVersion %%a
 )
 
 :InstallEditorVersion
