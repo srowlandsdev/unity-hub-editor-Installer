@@ -30,15 +30,15 @@ if exist %CURL_DOWNLOAD_PATH%\UnityHubSetup.exe (
 call "%CURL_DOWNLOAD_PATH%\UnityHubSetup.exe" /S
 
 (for %%a in(%UNITY_VERSIONS%) do (
-	goto InstallEditorVersion
+	goto InstallEditorVersion %%a
 )
 
 :InstallEditorVersion
 if exist %UNITY_PATH% (
-	echo Unity version %UNITY_VERSION% already installed at %UNITY_PATH%, moving to module installation
+	echo Unity version %~1 already installed at %UNITY_PATH%, moving to module installation
 	goto InstallEditorModules
 ) else (
-	echo Installing Unity Editor version: %UNITY_VERSION%
+	echo Installing Unity Editor version: %~1
 	echo Release versions available:
 	call %HUB_INSTALLED_PATH% -- --headless editors -r
 	echo.-----------------------------------------------------------------------------------------------------------------------------.
@@ -49,13 +49,13 @@ if exist %UNITY_PATH% (
 	call %HUB_INSTALLED_PATH% -- --headless ip -g
 	echo.-----------------------------------------------------------------------------------------------------------------------------.
 	echo Running install command:
-	call %HUB_INSTALLED_PATH% -- --headless install --version %UNITY_VERSION%
+	call %HUB_INSTALLED_PATH% -- --headless install --version %~1
 	echo.-----------------------------------------------------------------------------------------------------------------------------.
 )
 
 :InstallEditorModules
 echo Installing editor modules
-call %HUB_INSTALLED_PATH% -- --headless install-modules --version %UNITY_VERSION% -m ios android --childModules
+call %HUB_INSTALLED_PATH% -- --headless install-modules --version %~1 -m ios android --childModules
 echo.-----------------------------------------------------------------------------------------------------------------------------.
 goto Complete
 
@@ -64,5 +64,5 @@ echo Error encountered during installation due to missing or improper variable
 exit 1
 
 :Complete
-echo Unity installation has now completed for version %UNITY_VERSION%
+echo Unity installation has now completed for version %~1
 exit 0
